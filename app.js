@@ -27,3 +27,9 @@ const gameState = (() => {
     incrementTurn,
   };
 })();
+
+const player = (name) => {
+  let state = {
+    name,
+  };
+};
