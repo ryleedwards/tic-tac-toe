@@ -1,5 +1,15 @@
 // gameBoard Module
 const gameBoard = (() => {
+  // array of squares on display and assignment of click listeners
+  const _boardDisplay = document.querySelectorAll(".square");
+  _boardDisplay.forEach((square) => {
+    square.addEventListener("click", (e) => {
+      const squareIndex = e.target.dataset.index;
+      updateSquare(squareIndex, player1.getIcon());
+    });
+  });
+
+  // board array
   let _board = ["", "", "", "", "", "", "", "", ""];
 
   const getBoard = () => {
@@ -11,7 +21,15 @@ const gameBoard = (() => {
   };
 
   const updateSquare = (position, entry) => {
-    _board.splice(position, 1, entry);
+    if (_board[position] == "") {
+      _board.splice(position, 1, entry);
+      _boardDisplay[position].innerText = entry;
+      return;
+    }
+    if (_board[position] != "") {
+      console.log("That position is already taken");
+      return;
+    }
   };
 
   return {
@@ -59,5 +77,3 @@ const player = (name, number) => {
 
 const player1 = player("player1", 1);
 const player2 = player("player2", 2);
-
-gameBoard.updateSquare(0, player1.getIcon());
