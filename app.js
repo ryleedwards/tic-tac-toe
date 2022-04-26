@@ -1,8 +1,8 @@
 // gameBoard Module
 const gameBoard = (() => {
   // array of squares on display and assignment of click listeners
-  const _boardDisplay = document.querySelectorAll(".square");
-  _boardDisplay.forEach((square) => {
+  const boardDisplay = document.querySelectorAll(".square");
+  boardDisplay.forEach((square) => {
     square.addEventListener("click", (e) => {
       const squareIndex = e.target.dataset.index;
       updateSquare(squareIndex, gameState.getCurrentPlayer().getIcon());
@@ -10,33 +10,43 @@ const gameBoard = (() => {
   });
 
   // board array
-  let _board = ["", "", "", "", "", "", "", "", ""];
-
-  const getBoard = () => {
-    return _board;
-  };
-
-  const getSquare = (position) => {
-    return _board[position];
-  };
+  let board = ["", "", "", "", "", "", "", "", ""];
 
   const updateSquare = (position, entry) => {
-    if (_board[position] == "") {
-      _board.splice(position, 1, entry);
-      _boardDisplay[position].innerText = entry;
+    if (board[position] == "") {
+      board.splice(position, 1, entry);
+      boardDisplay[position].innerText = entry;
       gameState.incrementTurn();
       return;
     }
-    if (_board[position] != "") {
+    if (board[position] != "") {
       console.log("That position is already taken");
       return;
     }
   };
 
+  const getBoard = () => {
+    return board;
+  };
+
+  const checkForWin = () => {
+    // Horizontal
+    let winner = false;
+    for (i = 0; i < 3; i++) {
+      let j = i * 3;
+      let joined = board.slice(j, j + 3).join("");
+      if (joined == "XXX" || joined == "OOO") {
+        winner = true;
+      }
+    }
+
+    return winner;
+  };
+
   return {
-    getBoard,
-    getSquare,
     updateSquare,
+    getBoard,
+    checkForWin,
   };
 })();
 
@@ -56,6 +66,7 @@ const gameState = (() => {
     return turn;
   };
   const incrementTurn = () => {
+    checkStatus();
     turn++;
     if (turn % 2) {
       currentPlayer = players[1];
@@ -70,6 +81,13 @@ const gameState = (() => {
 
   const getCurrentPlayer = () => {
     return currentPlayer;
+  };
+
+  const checkStatus = () => {
+    const win = gameBoard.checkForWin();
+    if (win) {
+      console.log("winner declared");
+    }
   };
 
   return {
@@ -92,11 +110,8 @@ const player = (name, first) => {
     icon,
   };
 
-  //const selectSquare = () => {};
-
   return {
     getIcon: () => state.icon,
-    //selectSquare,
   };
 };
 
