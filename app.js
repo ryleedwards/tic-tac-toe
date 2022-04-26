@@ -30,14 +30,31 @@ const gameBoard = (() => {
   };
 
   const checkForWin = () => {
-    // Horizontal
     let winner = false;
+    // Horizontal
     for (i = 0; i < 3; i++) {
       let j = i * 3;
       let joined = board.slice(j, j + 3).join("");
       if (joined == "XXX" || joined == "OOO") {
         winner = true;
       }
+    }
+    // Vertical
+    for (i = 0; i < 3; i++) {
+      let toJoin = [];
+      toJoin.push(board[i]);
+      toJoin.push(board[i + 3]);
+      toJoin.push(board[i + 6]);
+      let joined = toJoin.join("");
+      if (joined == "XXX" || joined == "OOO") {
+        winner = true;
+      }
+    }
+    // Diagonal
+    let diag1 = [board[0], board[4], board[8]].join("");
+    let diag2 = [board[2], board[4], board[6]].join("");
+    if (diag1 == "XXX" || diag1 == "OOO" || diag2 == "XXX" || diag2 == "OOO") {
+      winner = true;
     }
 
     return winner;
