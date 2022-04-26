@@ -30,13 +30,18 @@ const gameBoard = (() => {
   };
 
   const checkForWin = () => {
-    let winner = false;
+    let winner = { declared: false, winnerName: "" };
     // Horizontal
     for (i = 0; i < 3; i++) {
       let j = i * 3;
       let joined = board.slice(j, j + 3).join("");
       if (joined == "XXX" || joined == "OOO") {
-        winner = true;
+        if (joined == "XXX") {
+          winner.winnerName = "X";
+        } else if (joined == "OOO") {
+          winner.winnerName = "O";
+        }
+        winner.declared = true;
       }
     }
     // Vertical
@@ -47,14 +52,28 @@ const gameBoard = (() => {
       toJoin.push(board[i + 6]);
       let joined = toJoin.join("");
       if (joined == "XXX" || joined == "OOO") {
-        winner = true;
+        if (joined == "XXX") {
+          winner.winnerName = "X";
+        } else if (joined == "OOO") {
+          winner.winnerName = "O";
+        }
+        winner.declared = true;
       }
     }
     // Diagonal
     let diag1 = [board[0], board[4], board[8]].join("");
     let diag2 = [board[2], board[4], board[6]].join("");
     if (diag1 == "XXX" || diag1 == "OOO" || diag2 == "XXX" || diag2 == "OOO") {
-      winner = true;
+      if (diag1 == "XXX") {
+        winner.winnerName = "X";
+      } else if (diag1 == "OOO") {
+        winner.winnerName = "O";
+      } else if (diag2 == "XXX") {
+        winner.winnerName = "X";
+      } else if (diag2 == "OOO") {
+        winner.winnerName = "O";
+      }
+      winner.declared = true;
     }
 
     return winner;
@@ -102,8 +121,9 @@ const gameState = (() => {
 
   const checkStatus = () => {
     const win = gameBoard.checkForWin();
-    if (win) {
-      console.log("winner declared");
+    console.log(win);
+    if (win.declared) {
+      console.log(`${win.winnerName} wins!`);
     }
   };
 
