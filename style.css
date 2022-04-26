@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap");
+
+:root {
+  --prim-1: #f8f9faff;
+  --prim-2: #e9ecefff;
+  --prim-3: #dee2e6ff;
+  --prim-4: #ced4daff;
+  --prim-5: #adb5bdff;
+  --prim-6: #6c757dff;
+  --prim-7: #495057ff;
+  --prim-8: #343a40ff;
+  --prim-9: #212529ff;
+  --player1: #21b0fe;
+  --player2: #fe218b;
+  --yellow: #fed700;
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 7fr;
+  font-family: "Open Sans", sans-serif;
+}
+
+header {
+  background-color: var(--prim-7);
+  grid-row: 1 / 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: 3rem;
+  color: white;
+}
+
+main {
+  background-color: var(--prim-8);
+  grid-row: 2 / 3;
+}
