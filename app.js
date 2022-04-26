@@ -5,7 +5,7 @@ const gameBoard = (() => {
   _boardDisplay.forEach((square) => {
     square.addEventListener("click", (e) => {
       const squareIndex = e.target.dataset.index;
-      updateSquare(squareIndex, player1.getIcon());
+      updateSquare(squareIndex, gameState.getCurrentPlayer().getIcon());
     });
   });
 
@@ -24,6 +24,7 @@ const gameBoard = (() => {
     if (_board[position] == "") {
       _board.splice(position, 1, entry);
       _boardDisplay[position].innerText = entry;
+      gameState.incrementTurn();
       return;
     }
     if (_board[position] != "") {
@@ -42,38 +43,61 @@ const gameBoard = (() => {
 // gameState Module
 const gameState = (() => {
   let turn = 0;
+  const players = [];
+  let currentPlayer = "";
+
+  const initializeGame = () => {
+    players.push(player("player1", true));
+    players.push(player("player2", false));
+    currentPlayer = players[0];
+  };
+
   const getTurn = () => {
     return turn;
   };
   const incrementTurn = () => {
     turn++;
+    if (turn % 2) {
+      currentPlayer = players[1];
+    } else {
+      currentPlayer = players[0];
+    }
   };
   const resetTurns = () => {
     turn = 0;
+    currentPlayer = players[0];
   };
+
+  const getCurrentPlayer = () => {
+    return currentPlayer;
+  };
+
   return {
     getTurn,
     incrementTurn,
     resetTurns,
+    initializeGame,
+    getCurrentPlayer,
   };
 })();
 
 // player Factory
 
-const player = (name, number) => {
-  if (number == 1) icon = "X";
+const player = (name, first) => {
+  if (first) icon = "X";
   else icon = "O";
   let state = {
     name,
-    number,
+    first,
     icon,
   };
 
+  //const selectSquare = () => {};
+
   return {
-    greet: () => console.log(`hello my name is ${name}`),
     getIcon: () => state.icon,
+    //selectSquare,
   };
 };
 
-const player1 = player("player1", 1);
-const player2 = player("player2", 2);
+gameState.initializeGame();
