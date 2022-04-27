@@ -211,13 +211,15 @@ const aiBot = (name, first, difficulty) => {
     currentBoard = gameBoard.getBoard();
     // determine available plays on board
     let availablePlays = [];
-    for (i = 0; i < board.length; i++) {
-      if (board[i] == "") {
+    for (i = 0; i < currentBoard.length; i++) {
+      if (currentBoard[i] == "") {
         availablePlays.push(i);
       }
     }
     // randomly play among available options (EASY)
-    randomSelect = Math.random() * availablePlays;
+    console.log({ currentBoard, availablePlays });
+    randomSelect = Math.floor(Math.random() * availablePlays.length);
+    console.log(randomSelect);
   };
 
   return Object.assign({ aiPlay, getDifficulty }, prototype);
