@@ -53,6 +53,11 @@ const gameBoard = (() => {
 
   const checkForWin = () => {
     let winner = { declared: false, winnerName: "" };
+    // Tie
+    if (!board.includes("")) {
+      winner.declared = true;
+      winner.winnerName = "tie";
+    }
     // Horizontal
     for (i = 0; i < 3; i++) {
       let j = i * 3;
@@ -152,7 +157,11 @@ const gameState = (() => {
   const checkStatus = () => {
     const win = gameBoard.checkForWin();
     if (win.declared) {
-      session.declaredOutcome.innerText = `${win.winnerName} wins!`;
+      if (win.winnerName == "tie") {
+        session.declaredOutcome.innerText = `Tie Game!`;
+      } else {
+        session.declaredOutcome.innerText = `${win.winnerName} wins!`;
+      }
       session.resultScreen.classList.toggle("hidden");
     }
   };
