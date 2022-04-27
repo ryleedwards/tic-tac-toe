@@ -6,6 +6,7 @@ const session = (() => {
       if (e.target.classList[1] == "replay") {
         gameBoard.clearBoard();
         gameState.resetTurns();
+        session.resultScreen.classList.toggle("hidden");
       }
     });
   });
@@ -19,9 +20,13 @@ const session = (() => {
       );
     });
   });
+  const declaredOutcome = document.getElementById("declared-outcome");
+  const resultScreen = document.querySelector(".result-screen");
 
   return {
     boardDisplay: boardDisplay,
+    declaredOutcome: declaredOutcome,
+    resultScreen: resultScreen,
   };
 })();
 
@@ -99,7 +104,7 @@ const gameBoard = (() => {
 
   const clearBoard = () => {
     board = ["", "", "", "", "", "", "", "", ""];
-    boardDisplay.forEach((square) => {
+    session.boardDisplay.forEach((square) => {
       square.innerText = "";
     });
   };
@@ -147,9 +152,9 @@ const gameState = (() => {
 
   const checkStatus = () => {
     const win = gameBoard.checkForWin();
-    console.log(win);
     if (win.declared) {
-      console.log(`${win.winnerName} wins!`);
+      session.declaredOutcome.innerText = `${win.winnerName} wins!`;
+      session.resultScreen.classList.toggle("hidden");
     }
   };
 
