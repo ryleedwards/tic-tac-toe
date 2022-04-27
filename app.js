@@ -1,23 +1,39 @@
-// gameBoard Module
-const gameBoard = (() => {
-  // array of squares on display and assignment of click listeners
-  // TODO it would probably make more sense to move this into session Module
-  //   + clean up the gameBoard module
+// session Module
+const session = (() => {
+  const btns = document.querySelectorAll(".btn");
+  btns.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      if (e.target.classList[1] == "replay") {
+        gameBoard.clearBoard();
+        gameState.resetTurns();
+      }
+    });
+  });
   const boardDisplay = document.querySelectorAll(".square");
   boardDisplay.forEach((square) => {
     square.addEventListener("click", (e) => {
       const squareIndex = e.target.dataset.index;
-      updateSquare(squareIndex, gameState.getCurrentPlayer().getIcon());
+      gameBoard.updateSquare(
+        squareIndex,
+        gameState.getCurrentPlayer().getIcon()
+      );
     });
   });
 
+  return {
+    boardDisplay: boardDisplay,
+  };
+})();
+
+// gameBoard Module
+const gameBoard = (() => {
   // board array
   let board = ["", "", "", "", "", "", "", "", ""];
 
   const updateSquare = (position, entry) => {
     if (board[position] == "") {
       board.splice(position, 1, entry);
-      boardDisplay[position].innerText = entry;
+      session.boardDisplay[position].innerText = entry;
       gameState.incrementTurn();
       return;
     }
@@ -94,19 +110,6 @@ const gameBoard = (() => {
     checkForWin,
     clearBoard,
   };
-})();
-
-// session Module
-const session = (() => {
-  btns = document.querySelectorAll(".btn");
-  btns.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      if (e.target.classList[1] == "replay") {
-        gameBoard.clearBoard();
-        gameState.resetTurns();
-      }
-    });
-  });
 })();
 
 // gameState Module
