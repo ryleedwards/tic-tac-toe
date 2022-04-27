@@ -24,12 +24,14 @@ const session = (() => {
   const resultScreen = document.querySelector(".result-screen");
 
   const aiPlaying = true;
+  const delay = 500;
 
   return {
     boardDisplay: boardDisplay,
     declaredOutcome: declaredOutcome,
     resultScreen: resultScreen,
     aiPlaying: aiPlaying,
+    delay: delay,
   };
 })();
 
@@ -145,7 +147,9 @@ const gameState = (() => {
     if (turn % 2) {
       currentPlayer = players[1];
       if (session.aiPlaying) {
-        players[1].aiPlay();
+        setTimeout(() => {
+          players[1].aiPlay();
+        }, session.delay);
       }
     } else {
       currentPlayer = players[0];
@@ -221,7 +225,6 @@ const aiBot = (name, first, difficulty) => {
     randomSelect =
       availablePlays[Math.floor(Math.random() * availablePlays.length)];
     gameBoard.updateSquare(randomSelect, "O");
-    debugger;
   };
 
   return Object.assign({ aiPlay, getDifficulty }, prototype);
