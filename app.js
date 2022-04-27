@@ -43,7 +43,6 @@ const gameBoard = (() => {
       return;
     }
     if (board[position] != "") {
-      console.log("That position is already taken");
       return;
     }
   };
