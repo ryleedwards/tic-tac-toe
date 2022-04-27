@@ -134,7 +134,7 @@ const gameState = (() => {
 
   const initializeGame = () => {
     players.push(player("player1", true));
-    players.push(aiBot("Computer", false, "medium"));
+    players.push(aiBot("Computer", false, "easy"));
     currentPlayer = players[0];
   };
 
