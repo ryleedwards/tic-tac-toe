@@ -31,14 +31,14 @@ const session = (() => {
   const resultScreen = document.querySelector(".result-screen");
 
   const aiPlaying = true;
-  const delay = 500;
+  const DELAY = 250;
 
   return {
     boardDisplay: boardDisplay,
     declaredOutcome: declaredOutcome,
     resultScreen: resultScreen,
     aiPlaying: aiPlaying,
-    delay: delay,
+    DELAY: DELAY,
   };
 })();
 
@@ -149,17 +149,18 @@ const gameState = (() => {
     return turn;
   };
   const incrementTurn = () => {
-    checkStatus();
-    turn++;
-    if (turn % 2) {
-      currentPlayer = players[1];
-      if (session.aiPlaying) {
-        setTimeout(() => {
-          players[1].aiPlay();
-        }, session.delay);
+    if (!checkStatus()) {
+      turn++;
+      if (turn % 2) {
+        currentPlayer = players[1];
+        if (session.aiPlaying) {
+          setTimeout(() => {
+            players[1].aiPlay();
+          }, session.DELAY);
+        }
+      } else {
+        currentPlayer = players[0];
       }
-    } else {
-      currentPlayer = players[0];
     }
   };
   const resetTurns = () => {
@@ -180,7 +181,9 @@ const gameState = (() => {
         session.declaredOutcome.innerText = `${win.winnerName} wins!`;
       }
       session.resultScreen.classList.toggle("hidden");
+      return true;
     }
+    return false;
   };
 
   return {
