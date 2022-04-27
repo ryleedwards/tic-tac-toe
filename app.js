@@ -218,8 +218,10 @@ const aiBot = (name, first, difficulty) => {
     }
     // randomly play among available options (EASY)
     console.log({ currentBoard, availablePlays });
-    randomSelect = Math.floor(Math.random() * availablePlays.length);
-    console.log(randomSelect);
+    randomSelect =
+      availablePlays[Math.floor(Math.random() * availablePlays.length)];
+    gameBoard.updateSquare(randomSelect, "O");
+    debugger;
   };
 
   return Object.assign({ aiPlay, getDifficulty }, prototype);
