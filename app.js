@@ -1,3 +1,10 @@
+/* 
+need to fix bug experienced on player win condition. 
+    Behavior: when player wins, aiPlay is still executing and removing the 
+    displayResult screen w replay button. Locks game up and need to find way 
+    to prevent aiPlay running in the event of a win condition
+*/
+
 // session Module
 const session = (() => {
   const btns = document.querySelectorAll(".btn");
