@@ -23,10 +23,13 @@ const session = (() => {
   const declaredOutcome = document.getElementById("declared-outcome");
   const resultScreen = document.querySelector(".result-screen");
 
+  const aiPlaying = true;
+
   return {
     boardDisplay: boardDisplay,
     declaredOutcome: declaredOutcome,
     resultScreen: resultScreen,
+    aiPlaying: aiPlaying,
   };
 })();
 
@@ -129,7 +132,7 @@ const gameState = (() => {
 
   const initializeGame = () => {
     players.push(player("player1", true));
-    players.push(player("player2", false));
+    players.push(aiBot("Computer", false, "easy"));
     currentPlayer = players[0];
   };
 
@@ -141,6 +144,9 @@ const gameState = (() => {
     turn++;
     if (turn % 2) {
       currentPlayer = players[1];
+      if (session.aiPlaying) {
+        players[1].aiPlay();
+      }
     } else {
       currentPlayer = players[0];
     }
@@ -189,6 +195,32 @@ const player = (name, first) => {
   return {
     getIcon: () => state.icon,
   };
+};
+
+const aiBot = (name, first, difficulty) => {
+  let state = {
+    difficulty,
+  };
+  const prototype = player(name, first);
+
+  const getDifficulty = () => {
+    console.log(difficulty);
+  };
+
+  const aiPlay = () => {
+    currentBoard = gameBoard.getBoard();
+    // determine available plays on board
+    let availablePlays = [];
+    for (i = 0; i < board.length; i++) {
+      if (board[i] == "") {
+        availablePlays.push(i);
+      }
+    }
+    // randomly play among available options (EASY)
+    randomSelect = Math.random() * availablePlays;
+  };
+
+  return Object.assign({ aiPlay, getDifficulty }, prototype);
 };
 
 gameState.initializeGame();
