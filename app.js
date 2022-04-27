@@ -141,7 +141,7 @@ const gameState = (() => {
 
   const initializeGame = () => {
     players.push(player("player1", true));
-    players.push(aiBot("Computer", false, "easy"));
+    players.push(aiBot("Computer", false, "medium"));
     currentPlayer = players[0];
   };
 
@@ -149,6 +149,7 @@ const gameState = (() => {
     return turn;
   };
   const incrementTurn = () => {
+    // if status returns win, don't execute
     if (!checkStatus()) {
       turn++;
       if (turn % 2) {
@@ -221,6 +222,33 @@ const aiBot = (name, first, difficulty) => {
     console.log(difficulty);
   };
 
+  const _firstMove = (availableMoves) => {
+    randomSelect =
+      availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    gameBoard.updateSquare(randomSelect, icon);
+  };
+
+  const _middleCornerMove = (availableMoves) => {
+    let priotizedSelect = "";
+    let prioritizedMoves = [];
+    let bool = availableMoves.includes(4) == false;
+    // middle
+    if (availableMoves.includes(4)) {
+      priotizedSelect = 4;
+    }
+    // corners
+    else {
+      if (availableMoves.includes(0)) prioritizedMoves.push(0); //top left
+      if (availableMoves.includes(2)) prioritizedMoves.push(2); //top right
+      if (availableMoves.includes(6)) prioritizedMoves.push(6); //bottom left
+      if (availableMoves.includes(8)) prioritizedMoves.push(8); //bottom right
+
+      priotizedSelect =
+        prioritizedMoves[Math.floor(Math.random(availableMoves.length))];
+    }
+    gameBoard.updateSquare(priotizedSelect, icon);
+  };
+
   const aiPlay = () => {
     currentBoard = gameBoard.getBoard();
     // determine available plays on board
@@ -230,11 +258,17 @@ const aiBot = (name, first, difficulty) => {
         availablePlays.push(i);
       }
     }
-    // randomly play among available options (EASY)
-    console.log({ currentBoard, availablePlays });
-    randomSelect =
-      availablePlays[Math.floor(Math.random() * availablePlays.length)];
-    gameBoard.updateSquare(randomSelect, "O");
+    switch (difficulty) {
+      case "easy":
+        // randomly play among available options (EASY)
+        _firstMove(availablePlays);
+        break;
+
+      // prioritize next-best spot (MEDIUM)
+      case "medium":
+        _middleCornerMove(availablePlays);
+        break;
+    }
   };
 
   return Object.assign({ aiPlay, getDifficulty }, prototype);
