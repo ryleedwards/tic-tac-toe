@@ -1,6 +1,8 @@
 // gameBoard Module
 const gameBoard = (() => {
   // array of squares on display and assignment of click listeners
+  // TODO it would probably make more sense to move this into session Module
+  //   + clean up the gameBoard module
   const boardDisplay = document.querySelectorAll(".square");
   boardDisplay.forEach((square) => {
     square.addEventListener("click", (e) => {
@@ -79,11 +81,32 @@ const gameBoard = (() => {
     return winner;
   };
 
+  const clearBoard = () => {
+    board = ["", "", "", "", "", "", "", "", ""];
+    boardDisplay.forEach((square) => {
+      square.innerText = "";
+    });
+  };
+
   return {
     updateSquare,
     getBoard,
     checkForWin,
+    clearBoard,
   };
+})();
+
+// session Module
+const session = (() => {
+  btns = document.querySelectorAll(".btn");
+  btns.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      if (e.target.classList[1] == "replay") {
+        gameBoard.clearBoard();
+        gameState.resetTurns();
+      }
+    });
+  });
 })();
 
 // gameState Module
