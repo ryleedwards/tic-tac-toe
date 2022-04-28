@@ -141,6 +141,7 @@ const gameState = (() => {
   const getTurn = () => {
     return turn;
   };
+
   const incrementTurn = () => {
     // if status returns win, don't execute
     if (!checkStatus()) {
